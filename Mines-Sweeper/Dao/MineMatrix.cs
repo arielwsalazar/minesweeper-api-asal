@@ -8,12 +8,13 @@ namespace Mines_Sweeper.Dao
 {
     public class MineMatrix
     {
-        public GameStatus Status;
-        public string Token;
-        public int Bombs;
-        public int Height;
-        public int Width;
-        public Dictionary<int, Cell> Matrix;
+        public GameStatus Status { get; set; }
+        public string Token { get; set; }
+        public int Bombs { get; set; }
+        public int Height { get; set; }
+        public int Width { get; set; }
+        public DateTime StartedTime { get; set; }
+        public Dictionary<int, Cell> Matrix { get; set; }
 
         public MineMatrix(int height, int width, int bombs,string token)
         {
@@ -22,6 +23,7 @@ namespace Mines_Sweeper.Dao
             Bombs = bombs;
             Token = token;
             Status = GameStatus.PLAYING;
+            StartedTime = DateTime.Now;
 
             int[] bpositions = GenerateBombsPositions(height, width, bombs);
             Matrix = GenerateMatrix(height, width, bpositions);

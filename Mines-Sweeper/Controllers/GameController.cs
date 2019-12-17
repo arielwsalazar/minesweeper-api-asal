@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Mines_Sweeper.Classes;
+using Mines_Sweeper.Dao;
+using Mines_Sweeper.Repository;
 using Mines_Sweeper.Validation;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -39,8 +41,14 @@ namespace Mines_Sweeper.Controllers
             response.Token = Guid.NewGuid().ToString();
 
             //generate structure to save (map with mines)
+            MineMatrix mineMatrix = new MineMatrix(value.Height, value.Width, value.Bombs, response.Token);
+
+
+            //save structure in repository
+            //it could be an interface for db, file or memcached
             MineRepository repository = new MineRepository();
-            //genereate empty block maps
+            repository.Save(mineMatrix);
+
 
             return response;
         }
@@ -53,14 +61,15 @@ namespace Mines_Sweeper.Controllers
         /// <param name="value"></param>
         /// <returns></returns>
         [Route("api/[controller]/pick")]
-        [HttpPost]
-        public string Pick([FromBody]CellCoordinates value)
+        [HttpPost("token")]
+        public string Pick([FromBody]CellCoordinates value, string token)
         {
             //middleware checks token
             // validate coordinates
             // evaluate if bomb, number or zero
             // check if game is end
             // return json objects
+            Console.WriteLine(token);
             int x = value.X;
             int y = value.Y;
             return $"pick x: {x} y: {y}";

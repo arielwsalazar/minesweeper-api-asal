@@ -16,4 +16,7 @@
     <Folder Include="Repository\" />
     <Folder Include="Core\" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
 </Project>

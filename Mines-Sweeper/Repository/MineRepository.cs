@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using Mines_Sweeper.Dao;
+using Newtonsoft.Json;
 
 namespace Mines_Sweeper.Repository
 {
@@ -12,7 +14,18 @@ namespace Mines_Sweeper.Repository
 
         public int Save(MineMatrix matrix)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var jsonToSave = JsonConvert.SerializeObject(matrix);
+                File.WriteAllText($"{matrix.Token}.json", jsonToSave);
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return -1;
+            }
+            
+
+            return 1;
         }
     }
 }

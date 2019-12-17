@@ -9,7 +9,18 @@ namespace Mines_Sweeper.Repository
     {
         public MineMatrix Load(string token)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string fileText = File.ReadAllText($"{token}.json");
+                var json = JsonConvert.DeserializeObject<MineMatrix>(fileText);
+                return json;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+
         }
 
         public int Save(MineMatrix matrix)

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Mines_Sweeper.Classes;
+using Mines_Sweeper.Const;
+using Mines_Sweeper.Core;
 using Mines_Sweeper.Dao;
 using Mines_Sweeper.Repository;
 using Mines_Sweeper.Validation;
@@ -62,17 +64,46 @@ namespace Mines_Sweeper.Controllers
         /// <returns></returns>
         [Route("api/[controller]/pick")]
         [HttpPost("token")]
-        public string Pick([FromBody]CellCoordinates value, string token)
+        public ActionResult<PickResponse> Pick([FromBody]CellCoordinates value, string token)
         {
             //middleware checks token
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest();
+            }
             // validate coordinates
+
+            if (!PickValidation.IsPickValid(value))
+            {
+                return BadRequest();
+            }
+
+            MineRepository repository = new MineRepository();
+            MineMatrix mineMatrix = repository.Load(token);
+
+            if (mineMatrix == null)
+            {
+                return StatusCode(500);
+            }
+
             // evaluate if bomb, number or zero
-            // check if game is end
-            // return json objects
-            Console.WriteLine(token);
-            int x = value.X;
-            int y = value.Y;
-            return $"pick x: {x} y: {y}";
+            MineSweeper core = new MineSweeper(mineMatrix);
+
+            Cell cell = core.ProcessPoint(value.X, value.Y);
+
+            PickResponse pr = new PickResponse();
+            if (core.IsGameOver())
+            {
+                pr.GameStatus = GameStatus.GAME_OVER.ToString();
+            }
+            else
+            {
+                pr.GameStatus = GameStatus.PLAYING.ToString();
+            }
+
+            pr.TimeLapsed = DateTime.Now.Subtract(mineMatrix.StartedTime).Minutes; 
+            
+            return pr;
         }
 
         /// <summary>
@@ -82,17 +113,23 @@ namespace Mines_Sweeper.Controllers
         /// <param name="value">the coordinates</param>
         /// <returns></returns>
         [Route("api/[controller]/mark")]
-        [HttpPost]
-        public string Mark([FromBody]CellCoordinates value)
+        [HttpPost("token")]
+        public ActionResult<string> Mark([FromBody]CellCoordinates value,string token)
         {
             //middleware checks token
-            // validate coordinates and vefiry if cell is not discovered.
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest();
+            }
+            // validate coordinates and verify if cell is not discovered.
+
             // make math for knowing the delta.
+
             // check if game is end
+
             // return json objects
-            int x = value.X;
-            int y = value.Y;
-            return $"pick x: {x} y: {y}";
+            
+            return NotFound();
         }
     }
 }

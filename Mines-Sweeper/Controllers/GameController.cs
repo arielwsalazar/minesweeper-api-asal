@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Mines_Sweeper.Classes;
+using Mines_Sweeper.Validation;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -25,13 +26,22 @@ namespace Mines_Sweeper.Controllers
         /// <returns> a token for resume the game.</returns>
         [Route("api/[controller]/newgame")]
         [HttpPost]
-        public string NewGame([FromBody]NewPostBody value)
+        public ActionResult<NewGameResponse> NewGame([FromBody]NewPostBody value)
         {
+            //validate input
+            if (!NewGameValidation.IsBodyPostValid(value))
+            {
+                return BadRequest();
+            }
+
             //create token
-            //create file using token as id.
+            NewGameResponse response = new NewGameResponse();
+            response.Token = Guid.NewGuid().ToString();
+
             //generate structure to save (map with mines)
             //genereate empty block maps
-            return "newgame token";
+
+            return response;
         }
 
         /// <summary>

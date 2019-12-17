@@ -10,5 +10,10 @@
 
   <ItemGroup>
     <Folder Include="Classes\" />
+    <Folder Include="Dao\" />
+    <Folder Include="Const\" />
+    <Folder Include="Validation\" />
+    <Folder Include="Repository\" />
+    <Folder Include="Core\" />
   </ItemGroup>
 </Project>

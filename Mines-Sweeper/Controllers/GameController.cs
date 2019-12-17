@@ -39,6 +39,7 @@ namespace Mines_Sweeper.Controllers
             response.Token = Guid.NewGuid().ToString();
 
             //generate structure to save (map with mines)
+            MineRepository repository = new MineRepository();
             //genereate empty block maps
 
             return response;

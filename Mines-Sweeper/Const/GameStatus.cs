@@ -3,7 +3,7 @@ namespace Mines_Sweeper.Const
 {
     public enum GameStatus
     {
-        CONTINUE,
+        PLAYING,
         GAME_OVER,
         WON
     }

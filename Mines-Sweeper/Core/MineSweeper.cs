@@ -1,11 +1,14 @@
 ﻿using System;
+using Mines_Sweeper.Dao;
+
 namespace Mines_Sweeper.Core
 {
-    public class MineSweeper
+    public class MineSweeper : IMineSweeper
     {
 
-        public MineSweeper()
+        public MineMatrix Create(int height, int width, int bomb)
         {
+            throw new NotImplementedException();
         }
     }
 }

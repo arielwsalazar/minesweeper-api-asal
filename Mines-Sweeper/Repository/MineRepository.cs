@@ -3,7 +3,7 @@ using Mines_Sweeper.Dao;
 
 namespace Mines_Sweeper.Repository
 {
-    public class Repository : IRepository
+    public class MineRepository : IMineRepository
     {
         public MineMatrix Load(string token)
         {
